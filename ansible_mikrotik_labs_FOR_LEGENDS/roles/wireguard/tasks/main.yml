@@ -1,0 +1,86 @@
+- name: Ensure Wireguard Interface
+  community.routeros.api_modify:
+    path: interface wireguard
+    data:
+     - name: "{{ wg_name }}"
+       listen-port: "{{ wg_listen_port }}"
+- name: Assign Ip Address to wg interface
+  community.routeros.api_modify:
+    path: ip address
+    data:
+     - address: "{{ wg_ip }}"
+       interface: "{{ wg_name }}"
+
+- name: Read Wiregaurd Interface Info
+  community.routeros.api:
+    path: interface wireguard
+  register: wg_info
+- name: show outout
+  debug:
+    msg: "{{ wg_info }}"
+- name: Set public key fact
+  set_fact:
+    wg_public_key: >
+      {{ wg_info.msg[0]['public-key'] |
+          default(wg_info.msg[0]['public-key'])
+      }}
+- name: Show WireGuard public key fact per host
+  debug:
+    msg: "Host {{ inventory_hostname }} has public key: {{ wg_public_key }}"
+- name: Build Peer Variables
+  set_fact:
+    peer_ip: "{{ hostvars[item].wg_ip.split('/')[0] }}/32"
+    peer_key: "{{ hostvars[item].wg_public_key }}"
+  loop: "{{ groups['routers'] | difference([inventory_hostname]) }}"
+
+
+
+- name: Ensure Wireguad peer exists
+  community.routeros.api_modify:
+    path: interface wireguard peers
+    data:
+     - interface: "{{ wg_name }}"
+       public-key: "{{ peer_key }}"
+       allowed-address: "{{ peer_ip }}"
+- name: Ensure Wireguard peer exists
+  community.routeros.api_modify:
+    path: interface wireguard peers
+    data:
+      - interface: "{{ wg_name }}"
+        public-key: "{{ peer_key }}"
+        allowed-address: "{{ peer_ip }}"
+        endpoint-address: "{{ wg_peer_endpoint.split(':')[0] if wg_role == 'initiator' else omit }}"
+        endpoint-port: "{{ wg_peer_endpoint.split(':')[1] if wg_role == 'initiator' else omit }}"
+- name: Ensure Nat masquerade for Wg
+  community.routeros.api_modify:
+    path: ip firewall nat
+    data:
+     - chain: srcnat
+       action: masquerade
+       src-address: "{{ wg_subnet }}"
+       comment: "{{ wg_nat_comment }}"
+- name: Allow Wireguard input traffic
+  community.routeros.api_modify:
+    path: ip firewall filter
+    data:
+     - chain: input
+       action: accept
+       protocol: udp
+       dst-port: "{{ wg_listen_port }}"
+       comment: "{{ wg_fw_comment }}"
+- name: Add Wireguard Routing Table
+  community.routeros.api_modify:
+    path: ip route
+    data:
+     - dst-address: 0.0.0.0/0
+       gateway: "{{ wg_name }}"
+       routing-table: "{{ wg_route_table }}"
+- name: Mark Traffic routing
+  community.routeros.api_modify:
+    path: ip firewall mangle
+    data:
+     - chain: prerouting
+       src-address: "{{ wg_subnet }}"
+       action: mark-routing
+       new-routing-mark: "{{ wg_route_table }}"
+       passthrough: yes

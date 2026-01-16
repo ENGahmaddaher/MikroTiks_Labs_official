@@ -1,0 +1,26 @@
+- name: ALL TASK INIT RIGHT HERE
+  hosts: all
+  gather_facts: no
+  module_defaults:
+   community.routeros.api_find_and_modify:
+    hostname: "{{ ansible_host }}"
+    username: "{{ ansible_user }}"
+    password: "{{ ansible_password }}"
+   community.routeros.api:
+    hostname: "{{ ansible_host }}"
+    username: "{{ ansible_user }}"
+    password: "{{ ansible_password }}"
+   community.routeros.api_modify:
+    hostname: "{{ ansible_host }}"
+    username: "{{ ansible_user }}"
+    password: "{{ ansible_password }}"
+   community.routeros.api_facts:
+    hostname: "{{ ansible_host }}"
+    username: "{{ ansible_user }}"
+    password: "{{ ansible_password }}"
+   community.routeros.api_info:
+    hostname: "{{ ansible_host }}"
+    username: "{{ ansible_user }}"
+    password: "{{ ansible_password }}"
+  roles:
+  - wireguard

@@ -1,0 +1,12 @@
+ansible_user: admin
+ansible_password: admin
+ansible_connection: network_cli
+ansible_network_os: routeros
+wg_name: wg1
+wg_listen_port: 51820
+wg_subnet: 10.0.0.0/24
+wg_allowed_mask: 32
+wg_nat_comment: masquerade-wg
+wg_fw_comment: allow-wireguard
+wg_route_table: wg1-routing
+

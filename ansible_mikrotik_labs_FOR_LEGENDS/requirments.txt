@@ -1,0 +1,16 @@
+ansible
+ansible-core
+bcrypt
+cffi
+cryptography
+Jinja2
+librouteros
+MarkupSafe
+packaging
+paramiko
+pycparser
+PyNaCl
+PyYAML
+resolvelib
+scp
+toml
