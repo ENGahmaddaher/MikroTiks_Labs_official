@@ -1,0 +1,56 @@
+- name: exits loppback or np
+  community.routeros.api_info:
+    path: interface bridge
+  register: lo
+- name: Ceate loopback
+  community.routeros.api_find_and_modify:
+    path: interface bridge
+    data:
+     - name: "{{ bridge_name }}"
+  when: bridge_name not in (lo.result | map(attribute='name') | list)
+- name: exist ip address
+  community.routeros.api_info:
+    path: ip address
+  register: ip
+- name: Ensure IP address exists on loopback bridge
+  community.routeros.api_modify:
+    path: ip address
+    data:
+    - address: "{{ lo_ip }}"
+      interface: "{{ bridge_name }}"
+  when: lo_ip not in (ip.result | map(attribute='address') | list)
+- name: Create instance For Ospf
+  community.routeros.api_modify:
+    path: routing ospf instance
+    data:
+     - name: "{{ instance_name }}"
+       router-id: "{{ lo_ip.split('/')[0] }}"
+- name: check area
+  community.routeros.api_info:
+    path: routing ospf area
+  register: areas
+- name: Create Area
+  community.routeros.api_modify:
+    path: routing ospf area
+    data:
+     - name: "{{ area_name }}"
+       area-id: "{{ area_id }}"
+       instance: "{{ instance_name }}"
+  when: area_name not in (areas.result | map(attribute='name') | list)
+- name: show outtput
+  community.routeros.api_info:
+    path: routing ospf interface-template
+  register: temps
+- name: show debug
+  debug:
+    msg: "{{ temps }}"
+- name: ensure templates
+  community.routeros.api_modify:
+    path: routing ospf interface-template
+    data:
+     - interfaces: "{{ item.interface }}"
+       type: "{{ item.network_type }}"
+       area: "{{ area_name }}"
+       passive: "{{ (item.passive | bool) | ternary('yes', omit) }}"
+  loop: "{{ interfaces }}"
+  when: area_name not in ( temps.result | map(attribute='area') | list )

@@ -1,0 +1,8 @@
+ansible_user: admin
+ansible_password: admin
+ansible_connection: network_cli
+ansible_network_os: routeros
+bridge_name: lo_2
+instance_name: inst_1
+area_name: backbone
+area_id: 0.0.0.0

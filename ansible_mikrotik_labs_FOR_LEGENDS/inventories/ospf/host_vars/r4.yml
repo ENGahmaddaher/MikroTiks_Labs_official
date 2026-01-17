@@ -1,0 +1,10 @@
+ansible_host: 192.168.3.2
+lo_ip: 4.4.4.4/32
+router_id: "{{ lo_ip }}"
+interfaces:
+  - interface: ether1
+    network_type: broadcast
+    passive: false
+  - interface: ether2
+    network_type: broadcast
+    passive: true
