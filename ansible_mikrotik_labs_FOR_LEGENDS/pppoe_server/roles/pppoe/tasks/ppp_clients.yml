@@ -1,0 +1,31 @@
+---
+# Retrieve PPPoE client information
+- name: Show PPPoE Clients
+  community.routeros.api_info:
+    path: interface pppoe-client
+  register: clients
+
+# Print the collected PPPoE client data for debugging
+- name: Debug PPPoE Clients
+  debug:
+    var: clients
+
+# Add a new PPPoE client using variables for name, user, password, and interface
+- name: Add PPPoE Client
+  community.routeros.api_modify:
+    path: interface pppoe-client
+    data:
+      - name: "{{ name_c }}"
+        user: "{{ user_one }}"
+        password: "{{ pass_one }}"
+        interface: "{{ inter_one }}"
+        disabled: "no"   # ensure the client is enabled
+
+# Configure NAT rule to masquerade traffic going out through the PPPoE client
+- name: Configure NAT Masquerade
+  community.routeros.api_modify:
+    path: ip firewall nat
+    data:
+      - chain: srcnat
+        out-interface: "{{ name_c }}"
+        action: masquerade

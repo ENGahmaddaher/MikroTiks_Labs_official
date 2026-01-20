@@ -1,0 +1,15 @@
+ansible_host: 192.168.10.2
+role: ppp_server
+ppp_pool: server_pool
+ranges:
+ start: "10.0.0.10"
+ end: "10.0.0.50"
+def_pro: base_pppoe
+local_ip: "10.0.0.1"
+only_one: "yes"
+sec_pro: marltr
+limit: "4M/4M"
+pppoe: pppoe
+service_name: "base"
+auth: "pap,chap"
+int: ether1

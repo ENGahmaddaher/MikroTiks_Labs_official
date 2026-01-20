@@ -1,0 +1,57 @@
+---
+# Ensure an IP pool exists for PPPoE clients
+- name: Ensure IP Pool
+  community.routeros.api_modify:
+    path: ip pool
+    data:
+      - name: "{{ ppp_pool }}"
+        ranges: "{{ ranges.start }}-{{ ranges.end }}"
+
+# Collect existing PPP profiles
+- name: Ensure profiles list
+  community.routeros.api:
+    path: ppp profile
+    cmd: print
+  register: profiles
+
+# Add default profile if it does not exist
+- name: Add default PPP profile
+  community.routeros.api:
+    path: ppp profile
+    cmd: add name={{ def_pro }} local-address={{ local_ip }} remote-address={{ ppp_pool }}
+  when: def_pro not in profiles.msg | map(attribute='name') | list
+
+# Add secondary profile if it does not exist
+- name: Add secondary PPP profile
+  community.routeros.api:
+    path: ppp profile
+    cmd: add name={{ sec_pro }} local-address={{ local_ip }} remote-address={{ ppp_pool }} only-one={{ only_one }}
+  when: sec_pro not in profiles.msg | map(attribute='name') | list
+
+# Collect existing PPP secrets
+- name: Ensure secrets list
+  community.routeros.api:
+    path: ppp secret
+    cmd: print
+  register: secrets
+
+# Add new PPP secret if it does not exist
+- name: Add PPP secret
+  community.routeros.api:
+    path: ppp secret
+    cmd: add name={{ user_one }} password={{ pass_one }} profile={{ sec_pro }} service={{ pppoe }}
+  when: user_one not in secrets.msg | map(attribute='name') | list
+
+# Collect existing PPPoE servers
+- name: Ensure PPPoE server list
+  community.routeros.api:
+    path: interface pppoe-server server
+    cmd: print
+  register: ppp_base
+
+# Add PPPoE server if it does not exist
+- name: Add PPPoE server
+  community.routeros.api:
+    path: interface pppoe-server server
+    cmd: add service-name={{ service_name }} interface={{ int }} default-profile={{ def_pro }} authentication={{ auth }}
+  when: service_name not in ppp_base.msg | map(attribute='service-name') | list

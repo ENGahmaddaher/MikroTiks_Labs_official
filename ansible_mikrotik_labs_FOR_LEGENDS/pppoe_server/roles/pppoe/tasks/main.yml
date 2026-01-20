@@ -1,0 +1,8 @@
+- name: pppoe_server
+  include_tasks: pppoe_server.yml
+  tags: server
+  when: role == 'ppp_server'
+- name: pppoe client
+  include_tasks: ppp_clients.yml
+  when: role == 'ppp_client'
+  tags: clients

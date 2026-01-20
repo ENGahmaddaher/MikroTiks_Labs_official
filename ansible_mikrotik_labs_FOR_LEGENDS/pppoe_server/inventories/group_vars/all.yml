@@ -1,0 +1,8 @@
+ansible_user: admin
+ansible_password: admin
+ansible_connection: network_cli
+ansible_network_os: routeros
+user_one: "ahmad"
+pass_one: "00000000"
+inter_one: "ether1"
+name_c: "pppoe_client_one"
