@@ -41,9 +41,9 @@ RouterOS API enabled
 
 
 Install required collections
-
+```bash
 ansible-galaxy collection install -r requirements.yml
-
+```
 
 ---
 
