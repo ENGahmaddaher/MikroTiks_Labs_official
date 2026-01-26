@@ -172,7 +172,7 @@ Scalable and extendable design
 Run the Lab
 ```bash
 ansible-playbook playbooks/loadbalancing/loadbalancing.yml -i inventories/loadbalancing/hosts.yml
-`
+```
 
 ---
 
