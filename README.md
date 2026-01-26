@@ -70,9 +70,9 @@ Fully automated via RouterOS API
 
 
 Run the Lab
-
+```bash
 ansible-playbook playbooks/pppoe/pppoe.yml -i inventories/pppoe/hosts.yml
-
+```
 
 ---
 
@@ -94,9 +94,9 @@ Idempotent configuration (no duplicates)
 
 
 Run the Lab
-
+```bash
 ansible-playbook playbooks/ospf/ospf.yml -i inventories/ospf/hosts.yml
-
+```
 
 ---
 
@@ -118,9 +118,9 @@ Clean and minimal configuration
 
 
 Run the Lab
-
+```bash
 ansible-playbook playbooks/wireguard/wireguard.yml -i inventories/wireguard/hosts.yml
-
+```
 
 ---
 
@@ -146,9 +146,9 @@ Zero‑touch CAP provisioning
 
 
 Run the Lab
-
-ansible-playbook playbooks/vlan-capsman/vlan-capsman.yml -i inventories/vlan-capsman/hosts.yml
-
+```bash
+ansible-playbook playbooks/vlan-capsman/dhcp-vlan-capsman.yml -i inventories/dhcp-vlan-capsman/hosts.yml
+```
 
 ---
 
@@ -170,9 +170,9 @@ Scalable and extendable design
 
 
 Run the Lab
-
+```bash
 ansible-playbook playbooks/loadbalancing/loadbalancing.yml -i inventories/loadbalancing/hosts.yml
-
+`
 
 ---
 
