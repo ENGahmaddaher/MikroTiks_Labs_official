@@ -26,7 +26,7 @@ The goal is to demonstrate clean architecture, idempotent automation, and enterp
 - RouterOS API enabled  
 
 ### Install required collections:
-```bash
+bash
 ansible-galaxy collection install -r requirements.yml
 🧪 Available Labs
 🟢 PPPoE ISP Lab
@@ -47,6 +47,7 @@ Run the Lab
 bash
 ansible-playbook playbooks/pppoe/pppoe.yml -i inventories/pppoe/hosts.yml
 🔵 OSPF Routing Lab
+(ospf.png)
 Description
 
 Enterprise-grade OSPF deployment
