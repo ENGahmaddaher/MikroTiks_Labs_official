@@ -1,0 +1,15 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for capsman
+- name: includes router capsman
+  tags: capsman
+  include_tasks: capsman.yml
+  when: role == 'caps'
+- name: includes router capsman
+  tags: sw
+  include_tasks: sw.yml
+  when: role == 'sw'
+- name: includes router capsman
+  tags: ap
+  include_tasks: ap.yml
+  when: role == 'ap'

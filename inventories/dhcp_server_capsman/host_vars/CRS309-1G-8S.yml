@@ -1,0 +1,8 @@
+ansible_host: 192.168.99.2
+role: "sw"
+bridge_name: sw_bridge
+trunk:
+ - ether1
+ - ether2
+ - ether3
+ - ether4

@@ -1,0 +1,35 @@
+ansible_host: 192.168.1.108
+#ansible_host: 10.129.52.81
+role: "caps"
+bridge_name: bridge_lan
+vlans:
+ - interface: "{{ bridge_name }}"
+   id: 10
+   name: vlan-10
+   pool: vlan_10_pool
+   start: 192.168.10.10
+   end: 192.168.10.200
+   ip: 192.168.10.1/24
+   dh_n: dhcp_10
+   sub: 192.168.10.0/24
+   gateway: 192.168.10.1
+ - interface: "{{ bridge_name }}"
+   id: 20
+   pool: vlan_20_pool
+   start: 192.168.20.10
+   end: 192.168.20.200
+   gateway: 192.168.20.1
+   name: vlan-20
+   ip: 192.168.20.1/24
+   dh_n: dhcp_20
+   sub: 192.168.20.0/24
+ - interface: "{{ bridge_name }}"
+   id: 30
+   pool: vlan_30_pool
+   start: 192.168.30.10
+   end: 192.168.30.200
+   name: vlan-30
+   ip: 192.168.30.1/24
+   dh_n: dhcp_30
+   sub: 192.168.30.0/24
+   gateway: 192.168.30.1

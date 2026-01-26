@@ -1,0 +1,6 @@
+- name: Enable cap Mode
+  community.routeros.api_modify:
+    path: interface wireless cap
+    data:
+      - enabled: true
+        discovery-interfaces: ether1

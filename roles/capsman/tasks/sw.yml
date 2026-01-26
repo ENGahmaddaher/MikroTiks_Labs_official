@@ -1,0 +1,20 @@
+- name: Retrieve existing bridges
+  community.routeros.api_info:
+    path: interface bridge
+  register: bridge_list
+
+- name: Create main LAN bridge if missing
+  community.routeros.api_modify:
+    path: interface bridge
+    data:
+      - name: "{{ bridge_name }}"
+        vlan-filtering: true
+  when: bridge_name not in (bridge_list.result | map(attribute='name') | list)
+
+- name: Add trunk ports to LAN bridge
+  community.routeros.api_modify:
+    path: interface bridge port
+    data:
+      - bridge: "{{ bridge_name }}"
+        interface: "{{ item.port }}"
+  loop: "{{ trunk }}"

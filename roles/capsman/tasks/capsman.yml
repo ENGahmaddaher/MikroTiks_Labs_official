@@ -1,0 +1,102 @@
+- name: Retrieve existing VLANs
+  community.routeros.api_info:
+    path: interface vlan
+  register: vlan_list
+
+- name: Create VLAN interfaces (10, 20, 30)
+  community.routeros.api_modify:
+    path: interface vlan
+    data:
+      - name: "{{ item.name }}"
+        vlan-id: "{{ item.id }}"
+        interface: "{{ item.interface }}"
+  loop: "{{ vlans }}"
+  when: item.name not in (vlan_list.result | map(attribute='name') | list)
+
+- name: Assign IP addresses to VLANs
+  community.routeros.api_modify:
+    path: ip address
+    data:
+      - address: "{{ item.ip }}"
+        interface: "{{ item.name }}"
+  loop: "{{ vlans }}"
+
+- name: Retrieve existing IP pools
+  community.routeros.api_info:
+    path: ip pool
+  register: pool_list
+
+- name: Create IP pools for VLANs
+  community.routeros.api:
+    path: ip pool
+    cmd: add name={{ item.pool }} ranges={{ item.start }}-{{ item.end }}
+  loop: "{{ vlans }}"
+  when: item.pool not in (pool_list.result | map(attribute='name') | list)
+
+- name: Retrieve existing DHCP servers
+  community.routeros.api_info:
+    path: ip dhcp-server
+  register: dhcp_list
+
+- name: Configure DHCP servers for VLANs
+  community.routeros.api_modify:
+    path: ip dhcp-server
+    data:
+      - name: "{{ item.dh_n }}"
+        interface: "{{ item.name }}"
+        address-pool: "{{ item.pool }}"
+  loop: "{{ vlans }}"
+  when: item.dh_n not in (dhcp_list.result | map(attribute='name') | list)
+
+- name: Configure DHCP networks for VLANs
+  community.routeros.api_modify:
+    path: ip dhcp-server network
+    data:
+      - address: "{{ item.sub }}"
+        gateway: "{{ item.gateway }}"
+  loop: "{{ vlans }}"
+
+- name: Enable CAPsMAN service
+  community.routeros.api:
+    path: interface wifi capsman
+    cmd: set enabled=yes
+
+- name: Retrieve existing WiFi datapaths
+  community.routeros.api:
+    path: interface wifi datapath
+    cmd: print
+  register: datapath_list
+
+- name: Create WiFi datapaths for VLANs
+  community.routeros.api:
+    path: interface wifi datapath
+    cmd: add name=dp{{ item.name }} bridge={{ item.interface }} vlan-id={{ item.id }}
+  loop: "{{ vlans }}"
+  when: "('dp' ~ item.name) not in (datapath_list.msg | map(attribute='name') | list)"
+
+- name: Retrieve existing WiFi configurations
+  community.routeros.api:
+    path: interface wifi configuration
+    cmd: print
+  register: config_list
+
+- name: Create WiFi configurations for VLANs
+  community.routeros.api:
+    path: interface wifi configuration
+    cmd: add name=cf{{ item.name }} ssid=ssid{{ item.name }} datapath=dp{{ item.name }}
+  loop: "{{ vlans }}"
+  when: "('cf' ~ item.name) not in (config_list.msg | map(attribute='name') | list)"
+
+- name: Retrieve existing CAPsMAN provisioning
+  community.routeros.api:
+    path: interface wifi provisioning
+    cmd: print
+  register: prov_list
+- name: ssss
+  debug:
+    msg: "{{ prov_list }}"
+- name: Configure CAPsMAN provisioning
+  community.routeros.api:
+    path: interface wifi provisioning
+    cmd: add master-configuration=cfvlan-10 slave-configurations=cfvlan-20,cfvlan-30 action=create-dynamic-enabled
+  when: "'cfvlan-10' not in (prov_list.msg | map(attribute='master-configuration') | list)"
