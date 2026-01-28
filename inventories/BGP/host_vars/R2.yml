@@ -1,0 +1,14 @@
+ansible_host: 172.16.0.2
+lo_ip: "4.4.4.4/32"
+bgp_in:
+  name: inst_4
+  id: 4.4.4.4
+  as: 3
+conn:
+ - remote_add: 172.16.0.1
+   remote_as: 3
+   conn_name: ibgp_r1
+   role: ibgp
+ips:
+  - 172.16.0.0/24
+  - 4.4.4.4/32

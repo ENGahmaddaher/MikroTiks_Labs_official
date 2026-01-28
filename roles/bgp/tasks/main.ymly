@@ -1,0 +1,38 @@
+---
+- name: exits loppback or np
+  community.routeros.api_info:
+    path: interface bridge
+  register: lo
+- name: Ceate loopback
+  community.routeros.api_modify:
+    path: interface bridge
+    data:
+     - name: "{{ bridge_name }}"
+  when: bridge_name not in (lo.result | map(attribute='name') | list)
+- name: exist ip address
+  community.routeros.api_info:
+    path: ip address
+  register: ip
+- name: Ensure IP address exists on loopback bridge
+  community.routeros.api_modify:
+    path: ip address
+    data:
+    - address: "{{ lo_ip }}"
+      interface: "{{ bridge_name }}"
+  when: lo_ip not in (ip.result | map(attribute='address') | list)
+- name: enusre bgp instance
+  community.routeros.api_info:
+    path: routing bgp instances
+  register: instances
+- name: sssss
+  debug:
+    var: instances.result
+- name: make bgp instance
+  community.routeros.api_modify:
+    path: routing bgp instances
+    data:
+     - name: "{{ item.name_i }}"
+       router-id: "{{ item.id }}"
+       as: "{{ item.as }}"
+  loop: "{{ bgp }}"
+  when: item.name_i not in (instances.result | map(attribute='name') | list)

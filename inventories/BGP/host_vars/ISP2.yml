@@ -1,0 +1,15 @@
+ansible_host: 192.168.1.108
+lo_ip: "2.2.2.2/32"
+bgp_in:
+  name: inst_2
+  id: 2.2.2.2
+  as: 2
+conn:
+ - remote_add: 192.168.13.2
+   remote_as: 3
+   conn_name: ibgp_r1
+   role: ebgp
+ips:
+  - 192.168.13.0/24
+  - 2.2.2.2/32
+  - 192.168.1.0/24
