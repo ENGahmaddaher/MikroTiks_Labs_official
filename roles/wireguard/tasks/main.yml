@@ -10,7 +10,6 @@
     data:
      - address: "{{ wg_ip }}"
        interface: "{{ wg_name }}"
-
 - name: Read Wiregaurd Interface Info
   community.routeros.api:
     path: interface wireguard
@@ -32,16 +31,6 @@
     peer_ip: "{{ hostvars[item].wg_ip.split('/')[0] }}/32"
     peer_key: "{{ hostvars[item].wg_public_key }}"
   loop: "{{ groups['routers'] | difference([inventory_hostname]) }}"
-
-
-
-- name: Ensure Wireguad peer exists
-  community.routeros.api_modify:
-    path: interface wireguard peers
-    data:
-     - interface: "{{ wg_name }}"
-       public-key: "{{ peer_key }}"
-       allowed-address: "{{ peer_ip }}"
 - name: Ensure Wireguard peer exists
   community.routeros.api_modify:
     path: interface wireguard peers

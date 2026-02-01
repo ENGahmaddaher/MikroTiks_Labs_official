@@ -1,0 +1,12 @@
+- name: List current bridges
+  community.routeros.api:
+    path: interface bridge
+  register: bridge
+
+- name: Create LAN bridge
+  community.routeros.api_modify:
+    path: interface bridge
+    data:
+     - name: "{{ bridge_lan }}"
+       protocol-mode: "{{ mode }}"
+  when: bridge_lan not in (bridge.msg | map(attribute='name') | list)
