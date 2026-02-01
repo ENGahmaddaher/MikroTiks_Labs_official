@@ -10,3 +10,10 @@
      - name: "{{ bridge_lan }}"
        protocol-mode: "{{ mode }}"
   when: bridge_lan not in (bridge.msg | map(attribute='name') | list)
+- name: Add Bridge Ports
+  community.routeros.api_modify:
+    path: interface bridge port
+    data:
+     - bridge: "{{ bridge_lan }}"
+       interface: "{{ item }}"
+  loop: "{{ ports }}"

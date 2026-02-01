@@ -4,3 +4,8 @@ ansible_connection: network_cli
 ansible_network_os: routeros
 bridge_lan: "LAN"
 mode: "rstp"
+ports:
+  - ether1
+  - ether2
+  - ether3
+  - ether4
