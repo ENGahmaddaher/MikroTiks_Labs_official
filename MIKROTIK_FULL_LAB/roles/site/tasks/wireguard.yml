@@ -58,7 +58,7 @@
   set_fact:
     wg_peers: >-
       {{
-        groups['routers']
+        groups['wg']
         | difference([inventory_hostname])
         | map('extract', hostvars)
         | selectattr('wg_role','equalto', 'hub' if wg_role == 'spoke' else 'spoke')

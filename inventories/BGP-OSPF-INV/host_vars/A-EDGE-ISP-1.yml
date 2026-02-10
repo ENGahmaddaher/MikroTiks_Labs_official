@@ -1,0 +1,25 @@
+ansible_host: 192.168.10.2
+loopback:
+ name: "lo_id"
+ id: "2.2.2.2/32"
+interfaces:
+  - interface: ether3
+    network_type: ptp
+    passive: false
+  - interface: ether2
+    network_type: ptp
+    passive: false
+bgp:
+ - con: To-RR
+   remote_as: 6503
+   remote_address: 192.168.20.2
+   role: ibgp
+   redistr: connected
+ - con: To-ISP-1
+   remote_as: 6500
+   remote_address: 192.168.10.1
+   role: ebgp
+   redistr: connected
+bgp_base:
+   temp: "temp_1"
+   as: "6503"

@@ -1,0 +1,21 @@
+---
+- name: add_default_route
+  community.routeros.api_modify:
+    path: ip route
+    data:
+      - dst-address: "{{ def_route.dst }}"
+        gateway: "{{ def_route.gateway }}"
+
+- name: configure_dns
+  community.routeros.api_modify:
+    path: ip dns
+    data:
+      - servers: "{{ dns.server_1 }},{{ dns.server_2 }}"
+        allow-remote-requests: "{{ dns.allow_remote_request }}"
+
+- name: add_dns_static_entry
+  community.routeros.api_modify:
+    path: ip dns static
+    data:
+      - name: "{{ dns.name }}"
+        address: "{{ dns.addr }}"

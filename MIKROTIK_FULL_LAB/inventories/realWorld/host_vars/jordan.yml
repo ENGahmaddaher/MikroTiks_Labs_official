@@ -1,0 +1,28 @@
+ansible_host: 192.168.1.120
+ips:
+ - ip: "172.16.0.1/30"
+   ether: "ether1"
+ - ip: "192.168.20.1/24"
+   ether: "ether3"
+#wg_ip: 10.0.0.2/24
+#wg_role: initiator
+wg_peer_endpoint: "172.16.0.2:51820"
+eth: ether2
+dst_add: "5.5.5.0/31"
+identity: "jordan"
+loopback:
+ name: "lo_1"
+ ip: "77.77.77.77/32"
+src_f: "192.168.20.0/24"
+dst_f: "5.5.5.0/31"
+subnet_1: "5.5.5.0/31"
+wg_role: spoke
+wg_ip: 10.40.40.3/24
+
+wan_ip: 172.16.100.3/24
+wan_interface: ether1
+
+lan_subnet: 192.168.20.0/24
+lan_interface: ether3
+lan_ip: 192.168.20.1/24
+allow_addr: 192.168.20.1

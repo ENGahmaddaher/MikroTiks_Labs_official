@@ -1,0 +1,34 @@
+---
+- name: show_ip_pools
+  community.routeros.api:
+    path: ip pool
+  register: pools
+
+- name: ensure_ip_pool
+  community.routeros.api_modify:
+    path: ip pool
+    data:
+      - name: "{{ pool.name }}"
+        ranges: "{{ pool.range }}"
+  when: pool.name not in (pools.msg | map(attribute='name') | list)
+
+- name: show_dhcp_servers
+  community.routeros.api:
+    path: ip dhcp-server
+  register: dhcp_servers
+
+- name: create_dhcp_server
+  community.routeros.api_modify:
+    path: ip dhcp-server
+    data:
+      - name: "{{ dhcp.name }}"
+        interface: "{{ dhcp.interface }}"
+        address-pool: "{{ pool.name }}"
+  when: dhcp.name not in (dhcp_servers.msg | map(attribute='name') | list)
+
+- name: configure_dhcp_network
+  community.routeros.api_modify:
+    path: ip dhcp-server network
+    data:
+      - address: "{{ dhcp_network }}"
+        gateway: "{{ dhcp_gateway }}"

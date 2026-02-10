@@ -1,0 +1,21 @@
+- name: setup_ads
+  include_tasks: "all.yml"
+- name: setup_all_roles
+  include_tasks: "ip.yml"
+#- name: configure_dhcp
+ # include_tasks: "dhcp.yml"
+- name: configure_network
+  include_tasks: "network.yml"
+  when: inventory_hostname in groups['network']
+- name: configure_google_services
+  include_tasks: "google.yml"
+  when: inventory_hostname in groups['GO']
+- name: configure_usa_region
+  include_tasks: "usa.yml"
+  when: inventory_hostname in groups['US']
+- name: configure wireguard VPN
+  include_tasks: "wireguard.yml"
+  when: inventory_hostname in groups['wg']
+- name: Configure BGP
+  include_tasks: "bgp.yml"
+  when: inventory_hostname in groups['bgp']

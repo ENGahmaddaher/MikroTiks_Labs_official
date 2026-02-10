@@ -1,0 +1,31 @@
+ansible_host: 192.168.1.113
+ips:
+ - ip: "8.8.8.8/24"
+   ether: "ether1"
+identity: "google"
+loopback:
+ name: "lo_1"
+ ip: "55.55.55.55/32"
+def_route:
+ dst: "0.0.0.0/0"
+ gateway: "8.8.8.1"
+dns:
+ server_1: "127.0.0.1"
+ server_2: "8.8.4.4"
+ allow_remote_request: yes
+ name: "webserver.com"
+ addr: "192.168.200.10"
+bgp:
+ - connection: To-USA
+   remote_as: 300
+   remote_address: 8.8.8.1
+   role: ebgp
+   local: 8.8.8.8
+   #redistr: connected
+   output_network: public_1
+bgp_base:
+   temp: "temp_1"
+   as: "300"
+address_list:
+  - list: "public_1"
+    address: ""

@@ -1,0 +1,42 @@
+ansible_host: 192.168.1.170
+ips:
+ - ip: "70.70.70.1/31"
+   ether: "ether2"
+ - ip: "60.60.60.1/31"
+   ether: "ether1"
+ - ip: "192.168.200.1/24"
+   ether: "ether4"
+identity: "amazon"
+loopback:
+ name: "lo_1"
+ ip: "103.103.103.103/32"
+
+
+
+bgp:
+ - connection: To-MEXICO
+   remote_as: 400
+   remote_address: 60.60.60.0
+   role: ebgp
+   local: 60.60.60.1
+   #redistr: connected
+   output_network: public_1
+ - connection: To-KANADA
+   remote_as: 100
+   remote_address: 70.70.70.0
+   role: ebgp
+   local: 70.70.70.1
+   #redistr: connected
+   output_network: public_2
+bgp_base:
+   temp: "temp_1"
+   as: "200"
+address_list:
+  - list: "public_1"
+    address: 192.168.200.0/24
+  - list: "public_1"
+    address: 70.70.70.0/31
+  - list: "public_2"
+    address: 192.168.200.0/24
+  - list: "public_2"
+    address: 60.60.60.0/31

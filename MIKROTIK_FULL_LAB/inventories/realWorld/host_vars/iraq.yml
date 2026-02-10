@@ -1,0 +1,10 @@
+ansible_host: 192.168.1.130
+wg_role: hub
+wg_ip: 10.40.40.1/24
+
+wan_ip: 172.16.100.1/24
+wan_interface: ether1
+identity: iraq
+loopback:
+ name: "lo_1"
+ ip: "88.88.88.88/32"

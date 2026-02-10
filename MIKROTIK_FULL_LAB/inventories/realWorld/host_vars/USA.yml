@@ -1,0 +1,56 @@
+ansible_host: 192.168.1.119
+ips:
+ - ip: "8.8.8.1/24"
+   ether: "ether3"
+ - ip: "10.11.12.3/31"
+   ether: "ether2"
+ - ip: "90.90.90.1/31"
+   ether: "ether4"
+identity: "USA"
+loopback:
+ name: "lo_1"
+ ip: "44.44.44.44/32"
+ospf:
+   instance: "ospf-instance-1"
+   disabled: no
+   area: "ospf-area-one"
+   area_id: "0.0.0.0"
+interfaces:
+  - interface: ether3
+    network_type: ptp
+    passive: false
+  - interface: ether2
+    network_type: ptp
+    passive: false
+bgp:
+ - connection: To-KANADA
+   remote_as: 100
+   remote_address: 90.90.90.0
+   role: ebgp
+   local: 90.90.90.1
+   #redistr: connected
+   output_network: public_1
+ - connection: To-EGYPT
+   remote_as: 300
+   remote_address: 10.11.12.2
+   role: ibgp
+   local: 10.11.12.3
+   #redistr: connected
+   output_network: public_2
+ - connection: To-GOOGLE
+   remote_as: 300
+   remote_address: 8.8.8.8
+   role: ibgp
+   local: 8.8.8.1
+   #redistr: connected
+   output_network: public_2
+bgp_base:
+   temp: "temp_1"
+   as: "300"
+address_list:
+  - list: "public_1"
+    address: 10.11.12.2/31
+  - list: "public_1"
+    address: 8.8.8.0/24
+  - list: "public_2"
+    address: 90.90.90.0/31

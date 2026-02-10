@@ -1,0 +1,72 @@
+ansible_host: 192.168.1.110
+src_f: "0.0.0.0/0"
+dst_f: "192.168.20.0/24"
+ips:
+ - ip: "5.5.5.2/31"
+   ether: "ether1"
+ - ip: "10.10.10.2/31"
+   ether: "ether2"
+ - ip: "172.16.0.2/30"
+   ether: "ether4"
+dhcp_network: "192.168.199.0/24"
+dhcp_gateway: "192.168.199.1"
+identity: "syria"
+loopback:
+ name: "lo_1"
+ ip: "22.22.22.22/32"
+ospf:
+   instance: "ospf-instance-1"
+   disabled: no
+   area: "ospf-area-one"
+   area_id: "0.0.0.0"
+interfaces:
+  - interface: ether2
+    network_type: ptp
+    passive: false
+  - interface: ether1
+    network_type: ptp
+    passive: false
+#pool:
+ #name: "pool_one"
+ #range: "192.168.199.50-192.168.199.200"
+#dhcp:
+ #name: "dh_one"
+ #interface: "ether3"
+#wg_ip: 10.0.0.1/24
+#wg_role: responder
+#wg_peer_endpoint: "172.16.0.1:51820"
+eth: ether3
+dst_add: "192.168.20.0/24"
+subnet_1: "192.168.20.0/24"
+wg_role: spoke
+wg_ip: 10.40.40.2/24
+
+wan_ip: 172.16.100.2/24
+wan_interface: ether4
+
+lan_subnet: 5.5.5.0/31
+#lan_interface: ether3
+#lan_ip: 5.5.5.1/24
+allow_addr: 5.5.5.1
+
+bgp:
+ - connection: To-LEBANON
+   remote_as: 300
+   remote_address: 5.5.5.3
+   role: ibgp
+   local: 5.5.5.2
+   #redistr: connected
+   output_network: public_1
+ - connection: To-EGYPT
+   remote_as: 300
+   local: 10.10.10.2
+   remote_address: 10.10.10.3
+   role: ibgp
+   #redistr: connected
+   output_network: public_1
+bgp_base:
+   temp: "temp_1"
+   as: "300"
+address_list:
+  - list: "public_1"
+    address: ""

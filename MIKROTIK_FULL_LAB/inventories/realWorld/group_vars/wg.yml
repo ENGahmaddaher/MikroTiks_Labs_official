@@ -1,0 +1,9 @@
+role: wg
+
+# WireGuard
+wg_name: wg0
+wg_listen_port: 13231
+wg_network: 10.40.40.0/24
+
+wg_fw_comment: "Allow WireGuard"
+wg_nat_comment: "WG no NAT"

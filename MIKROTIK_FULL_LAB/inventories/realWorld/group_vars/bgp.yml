@@ -1,0 +1,2 @@
+bgp_instance: "isntance_one"
+role: wan

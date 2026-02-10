@@ -1,0 +1,12 @@
+ansible_host: 192.168.1.130
+wg_role: spoke
+wg_ip: 10.10.10.2/24
+
+wan_ip: 172.16.100.2/24
+wan_interface: ether1
+
+lan_subnet: 5.5.5.0/24
+lan_interface: ether3
+lan_ip: 5.5.5.1/24
+allow_addr: 5.5.5.1
+

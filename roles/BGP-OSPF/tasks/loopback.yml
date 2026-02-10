@@ -1,0 +1,16 @@
+- name: show bridges
+  community.routeros.api:
+    path: interface bridge
+  register: lo
+- name: make bridge
+  community.routeros.api_modify:
+    path: interface bridge
+    data:
+     - name: "{{ loopback.name }}"
+  when: loopback.name not in (lo.msg | map(attribute='name') | list)
+- name: add address
+  community.routeros.api_modify:
+    path: ip address
+    data:
+     - address: "{{ loopback.id }}"
+       interface: "{{ loopback.name }}"

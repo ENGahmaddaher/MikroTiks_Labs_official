@@ -1,0 +1,8 @@
+---
+- name: show
+  include_tasks: "loopback.yml"
+- name: sjs
+  include_tasks: "ospf_init.yml"
+  when: role_target == 'osp'
+- name: sa
+  include_tasks: "bgp.yml"

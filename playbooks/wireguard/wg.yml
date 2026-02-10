@@ -1,0 +1,11 @@
+---
+- name: Deploy WireGuard Site-to-Site on MikroTik
+  hosts: routers
+  gather_facts: false
+  module_defaults:
+    group/community.routeros.api:
+      hostname: "{{ ansible_host }}"
+      username: "{{ ansible_user }}"
+      password: "{{ ansible_password }}"
+  roles:
+    - wireguard

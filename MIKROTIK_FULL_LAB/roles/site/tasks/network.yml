@@ -1,0 +1,44 @@
+---
+- name: show_ospf_instances
+  community.routeros.api:
+    path: routing ospf instance
+  register: instances
+
+- name: create_ospf_instance
+  community.routeros.api_modify:
+    path: routing ospf instance
+    data:
+      - name: "{{ ospf.instance }}"
+        router-id: "{{ loopback.ip.split('/')[0] }}"
+        originate-default: if-installed
+  when: ospf.instance not in (instances.msg | map(attribute='name') | list)
+
+- name: show_ospf_areas
+  community.routeros.api_info:
+    path: routing ospf area
+  register: areas
+
+- name: create_ospf_area
+  community.routeros.api_modify:
+    path: routing ospf area
+    data:
+      - name: "{{ ospf.area }}"
+        area-id: "{{ ospf.area_id }}"
+        instance: "{{ ospf.instance }}"
+  when: ospf.area not in (areas.result | map(attribute='name') | list)
+
+- name: show_ospf_interface_templates
+  community.routeros.api_info:
+    path: routing ospf interface-template
+  register: temps
+
+- name: ensure_ospf_interface_templates
+  community.routeros.api_modify:
+    path: routing ospf interface-template
+    data:
+      - interfaces: "{{ item.interface }}"
+        type: "{{ item.network_type }}"
+        area: "{{ ospf.area }}"
+        passive: "{{ (item.passive | bool) | ternary('yes', omit) }}"
+  loop: "{{ interfaces }}"
+  when: ospf.area not in (temps.result | map(attribute='area') | list)

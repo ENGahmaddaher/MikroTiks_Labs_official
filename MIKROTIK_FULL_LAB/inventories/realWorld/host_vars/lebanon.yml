@@ -1,0 +1,56 @@
+ansible_host: 192.168.1.112
+ips:
+ - ip: "5.5.5.3/31"
+   ether: "ether1"
+ - ip: "10.20.30.3/31"
+   ether: "ether2"
+ - ip: "50.50.50.1/31"
+   ether: "ether4"
+identity: "lebanon"
+loopback:
+ name: "lo_1"
+ ip: "33.33.33.33/32"
+ospf:
+   instance: "ospf-instance-1"
+   disabled: no
+   area: "ospf-area-one"
+   area_id: "0.0.0.0"
+interfaces:
+  - interface: ether2
+    network_type: ptp
+    passive: false
+  - interface: ether1
+    network_type: ptp
+    passive: false
+bgp:
+ - connection: To-MEXICO
+   remote_as: 400
+   remote_address: 50.50.50.0
+   role: ebgp
+   local: 50.50.50.1
+   #redistr: connected
+   output_network: public_2
+ - connection: To-SYRIA
+   remote_as: 300
+   remote_address: 5.5.5.2
+   role: ibgp
+   local: 5.5.5.3
+   #redistr: connected
+   output_network: public_1
+ - connection: To-EGYPT
+   remote_as: 300
+   local: 10.20.30.3
+   remote_address: 10.20.30.2
+   role: ibgp
+   #redistr: connected
+   output_network: public_1
+bgp_base:
+   temp: "temp_1"
+   as: "300"
+address_list:
+  - list: "public_1"
+    address: 50.50.50.0/31
+  - list: "public_2"
+    address: 10.20.30.0/31
+  - list: "public_2"
+    address: 5.5.5.2/31

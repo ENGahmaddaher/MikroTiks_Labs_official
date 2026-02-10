@@ -1,0 +1,31 @@
+---
+- name: set_identity
+  community.routeros.api_modify:
+    path: system identity
+    data:
+      - name: "{{ identity }}"
+
+- name: check_loopback_bridge_exists
+  community.routeros.api_info:
+    path: interface bridge
+  register: lo
+
+- name: create_loopback_bridge
+  community.routeros.api_modify:
+    path: interface bridge
+    data:
+      - name: "{{ loopback.name }}"
+  when: loopback.name not in (lo.result | map(attribute='name') | list)
+
+- name: check_ip_addresses
+  community.routeros.api_info:
+    path: ip address
+  register: ip
+
+- name: ensure_loopback_ip_address
+  community.routeros.api_modify:
+    path: ip address
+    data:
+      - address: "{{ loopback.ip }}"
+        interface: "{{ loopback.name }}"
+  when: loopback.ip not in (ip.result | map(attribute='address') | list)

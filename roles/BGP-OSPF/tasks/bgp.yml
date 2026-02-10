@@ -1,0 +1,32 @@
+---
+- name: show instances
+  community.routeros.api:
+    path: routing bgp instance
+    cmd: print
+  register: instances
+- name: add instance
+  community.routeros.api:
+    path: routing bgp instance
+    cmd: add name={{ bgp_instance }} as={{ bgp_base.as }} router-id={{ loopback.id.split("/")[0] }}
+  when: bgp_instance not in (instances.msg | map (attribute='name') | list)
+#- name: show bgp  templates
+ # community.routeros.api:
+  #  path: routing bgp template
+   # cmd: print
+  #register: templates
+#- name: make template
+ # community.routeros.api:
+  #  path: routing bgp template
+   # cmd: add name={{ bgp_base.temp }} as={{ bgp_base.as }}
+ # when: bgp_base.temp not in (templates.msg | map(attribute='name') | list)
+- name: show conect
+  community.routeros.api:
+    path: routing bgp connection
+    cmd: print
+  register: conn
+- name: make connection
+  community.routeros.api:
+    path: routing bgp connection
+    cmd: add name={{ item.con }} instance={{ bgp_instance }} remote.address={{ item.remote_address }} remote.as={{ item.remote_as }}  output.redistribute={{ item.redistr }}  local.role={{ item.role }}
+  loop: "{{ bgp }}"
+  when: item.con not in (conn.msg | map(attribute='name') | list)

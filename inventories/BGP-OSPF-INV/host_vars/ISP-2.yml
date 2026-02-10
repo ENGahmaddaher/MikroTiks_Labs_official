@@ -1,0 +1,18 @@
+ansible_host: 192.168.1.102
+loopback:
+ name: "lo_id"
+ id: "5.5.5.5/32"
+bgp:
+ - con: To-EDGE-2-A
+   remote_as: 6503
+   remote_address: 192.168.40.2
+   role: ebgp
+   redistr: connected
+ - con: To-EDGE-2-B
+   remote_as: 6502
+   remote_address: 172.16.10.2
+   role: ebgp
+   redistr: connected
+bgp_base:
+   temp: "temp_1"
+   as: "6501"

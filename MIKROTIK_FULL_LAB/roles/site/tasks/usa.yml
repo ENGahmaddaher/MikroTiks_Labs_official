@@ -1,0 +1,8 @@
+---
+- name: configure_nat_masquerade
+  community.routeros.api_modify:
+    path: ip firewall nat
+    data:
+      - chain: srcnat
+        out-interface: ether1
+        action: masquerade

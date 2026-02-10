@@ -1,0 +1,5 @@
+ospf:
+ process: "insta_1"
+ area_id: "0.0.0.0"
+ area: "backbone"
+role_target: "osp"
