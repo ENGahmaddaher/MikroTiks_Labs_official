@@ -52,6 +52,54 @@ ansible-galaxy collection install -r requirements.yml
 
 ---
 
+🟠  MIKROTIK_FULL_LAB
+
+![real Lab](./MIKROTIK_FULL_LAB.png)
+
+MIKROTIK_FULL_LAB is a complete real-world enterprise & ISP simulation that combines multiple advanced technologies into a single cohesive architecture.
+This lab represents how MikroTik networks are actually deployed in production environments.
+Included Technologies
+ OSPF
+ 
+ Internal dynamic routing
+ 
+ Loopbacks as Router-IDs
+ 
+ Area design & interface-templates
+ 
+ BGP (iBGP / eBGP)
+ 
+ Enterprise / ISP routing
+ 
+ Route advertisement & control
+
+ WireGuard Site-to-Site
+ 
+ Secure encrypted tunnels between sites
+ 
+ API-based peer automation
+ 
+ Remote DNS
+ 
+ Centralized DNS configuration
+ 
+ Remote resolver usage
+
+ Fully automated via RouterOS API
+ 
+ Strict idempotency
+
+Ready for real hardware
+Run 
+```bash
+ansible-playbook \
+  -i MIKROTIK_FULL_LAB/inventories/realWorld/hosts.yml \
+  MIKROTIK_FULL_LAB/playbooks/realWorld/site.yml
+```
+
+---
+
+
 🟢 PPPoE ISP Lab
 
 ![pppoe Lab](./pppoe_server_client.png)
@@ -151,47 +199,7 @@ ansible-playbook playbooks/capsman/capsman.yml -i inventories/capsman/hosts.yml
 ```
 
 ---
-🟠  MIKROTIK_FULL_LAB
 
-![real Lab](./MIKROTIK_FULL_LAB.png)
-
-MIKROTIK_FULL_LAB is a complete real-world enterprise & ISP simulation that combines multiple advanced technologies into a single cohesive architecture.
-This lab represents how MikroTik networks are actually deployed in production environments.
-Included Technologies
-OSPF
-Internal dynamic routing
-Loopbacks as Router-IDs
-Area design & interface-templates
-BGP (iBGP / eBGP)
-Enterprise / ISP routing
-Route advertisement & control
-Scalable peering model
-WireGuard Site-to-Site
-Secure encrypted tunnels between sites
-Routing-ready design
-API-based peer automation
-Remote DNS
-Centralized DNS configuration
-Remote resolver usage
-Clean and consistent name resolution
-Design Goals
-Fully automated via RouterOS API
-Zero CLI interaction
-Strict idempotency
-Clean separation between:
-Inventories
-Roles
-Playbooks
-Ready for real hardware
-Run the Full Lab
-```bash
-ansible-playbook \
-  -i MIKROTIK_FULL_LAB/inventories/realWorld/hosts.yml \
-  MIKROTIK_FULL_LAB/playbooks/realWorld/site.yml
-```
-
-
----
 
 🔐 Connection Method
 
