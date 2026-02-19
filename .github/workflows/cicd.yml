@@ -1,0 +1,37 @@
+name: Ansible CI Pipeline
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  ansible-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Task
+        uses: arduino/setup-task@v2
+
+      - name: Install Python + Ansible
+        run: |
+          sudo apt update
+          sudo apt install -y ansible ansible-lint python3-pip
+          pip install yamllint
+
+      - name: Run update
+        run: task update
+
+      - name: Run setup
+        run: task setup
+
+      - name: Run lint
+        run: task ansible:lint
+
+      - name: Syntax check
+        run: task ansible:syntax
+
+      - name: Check mode
+        run: task ansible:check

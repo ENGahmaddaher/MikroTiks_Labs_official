@@ -1,0 +1,68 @@
+version: "3"
+
+tasks:
+
+  galaxy:
+    desc: "Install Ansible Galaxy collections"
+    cmds:
+      - |
+        if [ -f requirements.yml ]; then
+          ansible-galaxy collection install -r requirements.yml
+        else
+          echo "No requirements.yml found"
+        fi
+
+  lint:
+    desc: "Run ansible-lint on all playbooks"
+    cmds:
+      - ansible-lint playbooks
+
+  syntax:
+    desc: "Syntax check for all playbooks"
+    cmds:
+      - ansible-playbook --syntax-check playbooks/stp/stp.yml
+      - ansible-playbook --syntax-check playbooks/ospf/ospf.yml
+      - ansible-playbook --syntax-check playbooks/bgp/bgp.yml
+      - ansible-playbook --syntax-check playbooks/capsman/capsman.yml
+      - ansible-playbook --syntax-check playbooks/pppoe/pppoe.yml
+      - ansible-playbook --syntax-check playbooks/wireguard/wireguard.yml
+
+  check:
+    desc: "Run all playbooks in check mode"
+    cmds:
+      - ansible-playbook playbooks/stp/stp.yml --check -i inventories/stp/hosts
+      - ansible-playbook playbooks/ospf/ospf.yml --check -i inventories/ospf/hosts
+      - ansible-playbook playbooks/bgp/bgp.yml --check -i inventories/BGP/hosts
+      - ansible-playbook playbooks/capsman/capsman.yml --check -i inventories/dhcp_server_capsman/hosts
+      - ansible-playbook playbooks/pppoe/pppoe.yml --check -i inventories/pppoe_server/hosts
+      - ansible-playbook playbooks/wireguard/wireguard.yml --check -i inventories/wireguard/hosts
+
+  stp:
+    desc: "Run STP playbook"
+    cmds:
+      - ansible-playbook -i inventories/stp/hosts playbooks/stp/stp.yml
+
+  ospf:
+    desc: "Run OSPF playbook"
+    cmds:
+      - ansible-playbook -i inventories/ospf/hosts playbooks/ospf/ospf.yml
+
+  bgp:
+    desc: "Run BGP playbook"
+    cmds:
+      - ansible-playbook -i inventories/BGP/hosts playbooks/bgp/bgp.yml
+
+  capsman:
+    desc: "Run CAPsMAN playbook"
+    cmds:
+      - ansible-playbook -i inventories/dhcp_server_capsman/hosts playbooks/capsman/capsman.yml
+
+  pppoe:
+    desc: "Run PPPoE playbook"
+    cmds:
+      - ansible-playbook -i inventories/pppoe_server/hosts playbooks/pppoe/pppoe.yml
+
+  wireguard:
+    desc: "Run WireGuard playbook"
+    cmds:
+      - ansible-playbook -i inventories/wireguard/hosts playbooks/wireguard/wireguard.yml
