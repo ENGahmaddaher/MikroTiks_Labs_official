@@ -17,15 +17,10 @@ This repository contains a collection of real‑world MikroTik network labs auto
 📌 Key Features
 
 ✅ Modular Ansible architecture (Roles / Playbooks / Inventories)
-
 ✅ Per‑lab isolated inventories
-
 ✅ RouterOS API automation (no CLI scraping)
-
 ✅ Idempotent execution (changed = 0 on re‑run)
-
 ✅ Realistic enterprise network scenarios
-
 ✅ Ready for EVE‑NG / GNS3 / physical MikroTik devices
 
 
@@ -63,35 +58,6 @@ MIKROTIK_FULL_LAB is a complete real-world enterprise & ISP simulation that comb
 This lab represents how MikroTik networks are actually deployed in production environments.
 Included Technologies
  OSPF
- 
- Internal dynamic routing
- 
- Loopbacks as Router-IDs
- 
- Area design & interface-templates
- 
- BGP (iBGP / eBGP)
- 
- Enterprise / ISP routing
- 
- Route advertisement & control
-
- WireGuard Site-to-Site
- 
- Secure encrypted tunnels between sites
- 
- API-based peer automation
- 
- Remote DNS
- 
- Centralized DNS configuration
- 
- Remote resolver usage
-
- Fully automated via RouterOS API
- 
- Strict idempotency
-
 Ready for real hardware
 Run 
 ```bash
