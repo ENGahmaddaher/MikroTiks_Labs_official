@@ -17,10 +17,15 @@ This repository contains a collection of real‑world MikroTik network labs auto
 📌 Key Features
 
 ✅ Modular Ansible architecture (Roles / Playbooks / Inventories)
+
 ✅ Per‑lab isolated inventories
+
 ✅ RouterOS API automation (no CLI scraping)
+
 ✅ Idempotent execution (changed = 0 on re‑run)
+
 ✅ Realistic enterprise network scenarios
+
 ✅ Ready for EVE‑NG / GNS3 / physical MikroTik devices
 
 
