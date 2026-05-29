@@ -1,10 +1,13 @@
-MikroTiks_Labs_official
+# 🚀 MikroTik Ansible Labs
 
-🚀 MikroTik Ansible Labs
+> **Infrastructure Automation with Ansible & RouterOS API**
 
-Overview
+[![Ansible](https://img.shields.io/badge/Ansible-Automation-EE0000?logo=ansible&logoColor=white)](https://ansible.com)
+[![MikroTik](https://img.shields.io/badge/MikroTik-RouterOS-FF6600?logo=mikrotik&logoColor=white)](https://mikrotik.com)
+[![Python](https://img.shields.io/badge/Python-3.9+-3776AB?logo=python&logoColor=white)](https://python.org)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-Infrastructure Automation with Ansible & RouterOS API.
+---
 
 This repository contains a collection of real‑world MikroTik network labs automated using Ansible. The goal is to demonstrate clean architecture, idempotent automation, and enterprise‑style network design.
 
@@ -104,19 +107,6 @@ ansible-playbook \
 
 ![pppoe Lab](./pppoe_server_client.png)
 
-Description
-
-Simulates an ISP environment using MikroTik routers:
-
-Core router acting as ISP
-
-Multiple PPPoE servers and clients
-
-Profiles, secrets, pools, and authentication
-
-Fully automated via RouterOS API
-
-
 Run the Lab
 ```bash
 ansible-playbook playbooks/pppoe/pppoe.yml -i inventories/pppoe/hosts.yml
@@ -127,18 +117,6 @@ ansible-playbook playbooks/pppoe/pppoe.yml -i inventories/pppoe/hosts.yml
 🔵 OSPF Routing Lab
 
 ![ospf Lab](./ospf.png)
-
-Description
-
-Enterprise‑grade OSPF deployment:
-
-Loopback interfaces for Router‑ID
-
-OSPF instance, areas, and interface‑templates
-
-Passive and point‑to‑point interfaces
-
-Idempotent configuration (no duplicates)
 
 
 Run the Lab
@@ -152,19 +130,6 @@ ansible-playbook playbooks/ospf/ospf.yml -i inventories/ospf/hosts.yml
 
 ![wg Lab](./wireguard.png)
 
-Description
-
-Secure site‑to‑site VPN using WireGuard:
-
-Encrypted tunnels
-
-Peer automation via RouterOS API
-
-Ready for dynamic routing integration
-
-Clean and minimal configuration
-
-
 Run the Lab
 ```bash
 ansible-playbook playbooks/wireguard/wireguard.yml -i inventories/wireguard/hosts.yml
@@ -176,22 +141,6 @@ ansible-playbook playbooks/wireguard/wireguard.yml -i inventories/wireguard/host
 
 ![capsman Lab](./capsman.png)
 
-Description
-
-Enterprise wireless architecture:
-
-Router as Gateway + CAPsMAN Controller
-
-MikroTik switch with Bridge VLAN Filtering
-
-Multiple VLANs (MGMT / GUEST / SALES)
-
-VLAN‑based SSIDs
-
-DHCP per VLAN
-
-Zero‑touch CAP provisioning
-
 
 Run the Lab
 ```bash
@@ -200,57 +149,9 @@ ansible-playbook playbooks/capsman/capsman.yml -i inventories/capsman/hosts.yml
 
 ---
 
-
-🔐 Connection Method
-
-All devices are managed using RouterOS API only:
-
-ansible_connection=network_cli
-ansible_network_os=community.routeros.routeros
-
-> No SSH CLI scraping is used.
-
-
-
-
+--
 ---
 
-♻️ Idempotency Guarantee
-
-First run → changed > 0
-
-Second run → changed = 0
-
-
-Achieved using:
-
-API queries before object creation
-
-Conditional logic in tasks
-
-Proper object matching and filtering
-
-
-
----
-
-🧠 Learning Objectives
-
-This project helps you learn:
-
-Network automation best practices
-
-MikroTik RouterOS internals
-
-Scalable Ansible architecture
-
-Real ISP & enterprise network designs
-
-Infrastructure as Code (IaC)
-
-
-
----
 
 📌 Future Labs (Planned)
 
